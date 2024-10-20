@@ -13,11 +13,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    
+    - name: Install build-essential
+      run: sudo apt-get install build-essential
+
+    - name: Compile C++ files
+      run: g++ -std=c++17 -o main main.cpp sources/*.cpp
+      
+    - name: Clean up
+      run: rm main
