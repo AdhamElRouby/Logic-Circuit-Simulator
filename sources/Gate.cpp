@@ -1,4 +1,6 @@
 #include "../headers/Gate.h"
+#include <iostream>
+using namespace std;
 Gate::Gate(string type,vector<string> i,string o,int d):operationType(type),inputs(i),output(o),delay(d){}
 int Gate::evaluate() {  
     // Check if any input is invalid and return invalid 

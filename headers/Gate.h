@@ -3,8 +3,7 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "../main.cpp"
-extern map<string, int> mp;
+#include "../headers/Simulation.h"
 class Gate {
     private:
     string operationType;  //and,or,not.......
