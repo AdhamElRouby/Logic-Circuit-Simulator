@@ -133,7 +133,7 @@ void Simulation::readVFile(const string& filename) {
             continue;
         }
 
-        cout << line << endl;
+        // cout << line << endl;
 
         string firstWord = getFirstWord(line);
         firstWords.push_back(firstWord);
