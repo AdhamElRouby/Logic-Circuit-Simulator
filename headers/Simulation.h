@@ -27,6 +27,14 @@ class Simulation {
         string removeFirstTwoWords(const string& line);
 
         void readVFile(const string& filename);
+
+
+        //helping functions to parse the .stim file
+        int extractTimestamp(const std::string& line);
+        string extractInputName(const string& line);
+        int extractNewValue(const string& line);
+        
+
         void readStimFile(const string& filename);    
 };
 

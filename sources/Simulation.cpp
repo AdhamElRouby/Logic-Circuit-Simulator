@@ -202,3 +202,120 @@ void Simulation::readVFile(const string& filename) {
 
     file.close();
 }
+
+//For the .stim file fun#1
+//function to extract the timestamps from the .stim file
+int Simulation::extractTimestamp(const std::string& line) {
+    size_t hashPos = line.find('#');
+    if (hashPos == std::string::npos) {
+        throw std::invalid_argument("No '#' found in the input string.");
+    }
+
+    size_t spacePos = line.find(' ', hashPos);
+    if (spacePos == std::string::npos) {
+        throw std::invalid_argument("No space found after the '#' character.");
+    }
+
+    std::string timestampStr = line.substr(hashPos + 1, spacePos - hashPos - 1);
+
+    int timestamp = std::stoi(timestampStr);
+
+    return timestamp;
+}
+
+
+//For the .stim file fun#2
+//function to extract the inputnames from the .stim file
+string Simulation::extractInputName(const string& line) {
+    size_t firstSpacePos = line.find(' ');
+    if (firstSpacePos == string::npos) {
+        throw invalid_argument("No space found after the timestamp.");
+    }
+
+    size_t equalPos = line.find('=', firstSpacePos);
+    if (equalPos == string::npos) {
+        throw std::invalid_argument("No '=' found in the input string.");
+    }
+
+    string inputName = line.substr(firstSpacePos + 1, equalPos - firstSpacePos - 1);
+
+    return inputName;
+}
+
+
+//For the .stim file fun#3
+//function to extract the new input values from the .stim file
+int Simulation::extractNewValue(const string& line) {
+    size_t equalPos = line.find('=');
+    if (equalPos == string::npos) {
+        throw invalid_argument("No '=' found in the input string.");
+    }
+
+    size_t semicolonPos = line.find(';', equalPos);
+    if (semicolonPos == string::npos) {
+        throw invalid_argument("No ';' found after the '=' in the input string.");
+    }
+
+    string valueStr = line.substr(equalPos + 1, semicolonPos - equalPos - 1);
+
+    int newValue = stoi(valueStr);
+
+    return newValue;
+}
+
+
+
+void Simulation::readStimFile(const string& filename){
+
+        ifstream file(filename);
+        if (!file.is_open()) {
+            cerr << "Error opening file: " << filename << endl;
+            return ;
+        }
+        string line;
+        vector<int>timestamps;
+        vector<string>names;
+        vector<int>newvalues;
+
+        while (getline(file, line)) {
+
+            int timestamp = extractTimestamp(line);
+            timestamps.push_back(timestamp);
+
+            int newvalue = extractNewValue(line);
+            newvalues.push_back(newvalue);
+
+            string name = extractInputName(line);
+            names.push_back(name);
+
+        }
+
+        int size=timestamps.size();
+        for(int i=0;i<size;i++){
+            Event* event=new Event(timestamps[i],names[i],newvalues[i]);
+            eventQueue.push(event);
+
+        }
+/*
+        
+        cout << "time stamps in the file:" << endl;
+        for (const auto& timestamp1 : timestamps) {
+            cout << timestamp1 << endl;
+        }
+        cout << "intput names in the file:" << endl;
+        for (const auto& na : names) {
+            cout << na << endl;
+        }
+        cout << "new value in the file:" << endl;
+        for (const auto& nv : newvalues) {
+            cout << nv << endl;
+        }
+
+
+*/
+
+    file.close();
+
+    }
+
+    
