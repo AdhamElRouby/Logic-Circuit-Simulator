@@ -51,6 +51,7 @@ vector<string> Simulation::extractInputs(const string& line) {
         else if (c == ')') {
             collecting = false; // Stop collecting when ')' is found
             if (!inputPart.empty()) {
+                mp[inputPart] = -999;
                 inputs.push_back(inputPart);  // Push the final input
             }
             break;  // We've reached the end of the inputs
@@ -59,6 +60,7 @@ vector<string> Simulation::extractInputs(const string& line) {
             if (c == ',') {
                 if (!inputPart.empty()) {
                     if (firstArgumentIgnored) {
+                        mp[inputPart] = -999;
                         inputs.push_back(inputPart);  // Store the input when encountering a comma
                     }
                     inputPart.clear();            // Reset for the next input
@@ -150,6 +152,7 @@ void Simulation::readVFile(const string& filename) {
         smatch matchO;
         if (regex_search(line, matchO, outputPattern)) {
             if (matchO.size() > 1) {
+                mp[matchO[1]] = -999;
                 outputs.push_back(matchO[1]); // Store the output
             }
         }
@@ -263,8 +266,6 @@ int Simulation::extractNewValue(const string& line) {
     return newValue;
 }
 
-
-
 void Simulation::readStimFile(const string& filename){
 
         ifstream file(filename);
@@ -291,10 +292,9 @@ void Simulation::readStimFile(const string& filename){
         }
 
         int size=timestamps.size();
-        for(int i=0;i<size;i++){
-            Event* event=new Event(timestamps[i],names[i],newvalues[i]);
+        for(int i=0; i < size; i++){
+            Event* event= new Event(timestamps[i],names[i],newvalues[i]);
             eventQueue.push(event);
-
         }
 /*
         
@@ -316,6 +316,37 @@ void Simulation::readStimFile(const string& filename){
 
     file.close();
 
-    }
+}
 
-    
+// Function to refresh the gate outputs
+void Simulation::refreshGateOutputs(int currTime) {
+    for(auto& gate : gates){
+        int newValue = gate->evaluate();
+        if(newValue != gate->getOutput()) {
+            // If the newValue is different than the current value, create a new event for the output of the gate
+            Event* event = new Event(currTime + gate->getDelay(), gate->getOutputName(), newValue);
+            eventQueue.push(event);
+        }
+    }
+}
+
+void Simulation::simulate(const string& filename) {
+    ofstream fileOut(filename);
+    while(!eventQueue.empty()){
+        Event* event = eventQueue.top();
+        eventQueue.pop();
+        int currTime = event->getTime();
+        string signalName = event->getName();
+        if(mp[signalName] != event->getNewValue()){ // if there is a change in the value of the signal
+            mp[signalName] = event->getNewValue(); // update the value
+            fileOut << currTime << ", " << signalName << ", " << event->getNewValue() << '\n'; // write the new value in the .sim file  
+            refreshGateOutputs(currTime); // refresh the outputs of the gates
+        }
+    }
+}    
+
+void Simulation::run(const string& filename1, const string& filename2) {
+    readVFile(filename1);
+    readStimFile(filename2);
+    simulate("output.sim");
+}

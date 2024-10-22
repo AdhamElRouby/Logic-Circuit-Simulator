@@ -18,6 +18,7 @@ class Gate {
         int evaluate(); //function to calcualte the current output of the gate
         int getOutput(); //getter for the output
         string getOutputName(); //getter for the output name
+        int getDelay(); // getter for the delay
 };
 
 

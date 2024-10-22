@@ -85,3 +85,5 @@ int Gate::evaluate() {
 
 int Gate::getOutput() {return mp[output];}
 string Gate::getOutputName() {return output;}
+
+int Gate::getDelay() {return delay;}

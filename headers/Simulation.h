@@ -15,6 +15,8 @@ class Simulation {
     private:
         priority_queue<Event*, vector<Event*>, EventComparator> eventQueue; 
         vector<Gate*> gates;
+        void simulate(const string& filename); // helper function for run - runs the event-driven simulation
+        void refreshGateOutputs(int currTime); // helper function for simulate
 
     public:
         Simulation();
@@ -33,9 +35,9 @@ class Simulation {
         int extractTimestamp(const std::string& line);
         string extractInputName(const string& line);
         int extractNewValue(const string& line);
-        
-
         void readStimFile(const string& filename);    
+        
+        void run(const string& filename1, const string& filename2); // starts the simulation
 };
 
 
