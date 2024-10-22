@@ -1,9 +1,10 @@
 #ifndef GATE
 #define GATE
+
+#include <iostream>
 #include <string>
 #include <map>
 #include <vector>
-// #include "../headers/Simulation.h"
 using namespace std;
 
 class Gate {
@@ -16,6 +17,7 @@ class Gate {
         Gate(string type, vector<string> i, string o, int d); //operatinType,inputs,output,delay //when you construct a gate please make a vector of the inputs names
         int evaluate(); //function to calcualte the current output of the gate
         int getOutput(); //getter for the output
+        string getOutputName(); //getter for the output name
 };
 
 

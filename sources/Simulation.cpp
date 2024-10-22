@@ -6,6 +6,9 @@
 
 map<string, int> mp; 
 
+// constructor
+Simulation::Simulation() {}
+
 // Function to remove leading spaces
 string Simulation::trimLeadingSpaces(const string& line) {
     size_t start = 0;

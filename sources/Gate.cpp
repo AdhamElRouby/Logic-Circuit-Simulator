@@ -1,9 +1,9 @@
 #include "../headers/Gate.h"
-#include <iostream>
 
 extern map<string, int> mp;
 
-Gate::Gate(string type,vector<string> i,string o,int d):operationType(type),inputs(i),output(o),delay(d){}
+Gate::Gate(string type, vector<string> i, string o, int d) : operationType(type), inputs(i), output(o), delay(d) {}
+
 int Gate::evaluate() {  
     // Check if any input is invalid and return invalid 
     for (int i = 0; i < inputs.size(); ++i) {
@@ -83,4 +83,5 @@ int Gate::evaluate() {
     return -999;
 }
 
-int Gate::getOutput(){return mp[output];}
+int Gate::getOutput() {return mp[output];}
+string Gate::getOutputName() {return output;}
