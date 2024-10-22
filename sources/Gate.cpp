@@ -1,11 +1,13 @@
 #include "../headers/Gate.h"
 #include <iostream>
-using namespace std;
+
+extern map<string, int> mp;
+
 Gate::Gate(string type,vector<string> i,string o,int d):operationType(type),inputs(i),output(o),delay(d){}
 int Gate::evaluate() {  
     // Check if any input is invalid and return invalid 
     for (int i = 0; i < inputs.size(); ++i) {
-        if (inputs[i] == "-999") {
+        if (mp[inputs[i]] == -999) {
             return -999;  // invalid
         }
     }
@@ -19,7 +21,7 @@ int Gate::evaluate() {
         }
         return result;
     }
-      else if (operationType == "and") {
+    else if (operationType == "and") {
         // and: result is true if all inputs are true
         bool result = true;
         for (int i = 0; i < inputs.size(); ++i) {

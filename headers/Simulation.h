@@ -1,20 +1,9 @@
 #ifndef SIMULATION
 #define SIMULATION
 
-
-#include <string>
-#include <map>
-#include<vector>
-#include<queue>
-#include"../headers/Gate.h"
-#include"../headers/Event.h"
-
-
-
-using namespace std;
-
-
-extern map<string, int> mp;
+#include <queue>
+#include "../sources/Gate.cpp"
+#include "../headers/Event.h"
 
 struct EventComparator {
     bool operator()(Event* lhs, Event* rhs) const {
@@ -28,10 +17,9 @@ class Simulation {
         vector<Gate*> gates;
 
     public:
-        Simulation();
+        Simulation() {};
 
-
-        //helping function to parse the .v file
+        // helping function to parse the .v file
         string trimLeadingSpaces(const string& line);
         bool isWhitespace(const string& line);
         string getFirstWord(const string& line);
@@ -39,10 +27,7 @@ class Simulation {
         string removeFirstTwoWords(const string& line);
 
         void readVFile(const string& filename);
-
-
-        void readStimFile(const string& filename);
-    
+        void readStimFile(const string& filename);    
 };
 
 

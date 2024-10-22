@@ -1,14 +1,8 @@
 #include "../headers/Simulation.h"
-#include <iostream>
 #include <fstream>
-#include <string>
 #include <cctype>
-#include <vector>
 #include <regex> 
 #include <sstream>
-#include <map>
-
-using namespace std;
 
 map<string, int> mp; 
 
@@ -122,9 +116,9 @@ void Simulation::readVFile(const string& filename) {
     vector<vector<string>> inputs;
 
     while (getline(file, line)) {
-        line = Simulation::trimLeadingSpaces(line);
+        line = trimLeadingSpaces(line);
 
-        if (Simulation::isWhitespace(line)) {
+        if (isWhitespace(line)) {
             continue;
         }
 
@@ -136,7 +130,7 @@ void Simulation::readVFile(const string& filename) {
 
         cout << line << endl;
 
-        string firstWord = Simulation::getFirstWord(line);
+        string firstWord = getFirstWord(line);
         firstWords.push_back(firstWord);
 
         // Extract delay using regex and store in delays vector
@@ -158,8 +152,8 @@ void Simulation::readVFile(const string& filename) {
         }
 
         // Remove the first two words so we can store the inputs
-        line = Simulation::removeFirstTwoWords(line);
-        inputs.push_back(Simulation::extractInputs(line));
+        line = removeFirstTwoWords(line);
+        inputs.push_back(extractInputs(line));
 
         isEmptyFile = false;
     }
@@ -168,11 +162,13 @@ void Simulation::readVFile(const string& filename) {
         cout << "File is empty or contains only whitespace, ignoring..." << endl;
     }
 
-    int size=delays.size();
-    for(int i=0;i<size;i++){
+    int size = delays.size();
+    for(int i=0; i < size; i++){
         Gate* gate = new Gate(firstWords[i],inputs[i],outputs[i],stoi(delays[i]));
         gates.push_back(gate);
     }
+
+
 /*
     // Print first words
     cout << "First words in the file:" << endl;
