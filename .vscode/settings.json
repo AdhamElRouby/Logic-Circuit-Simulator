@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "map": "cpp",
-        "xstring": "cpp",
-        "queue": "cpp"
-    },
-    "C_Cpp.errorSquiggles": "enabled"
-}

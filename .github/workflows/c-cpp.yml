@@ -18,7 +18,7 @@ jobs:
       run: sudo apt-get install build-essential
 
     - name: Compile C++ files
-      run: g++ -std=c++17 -o main main.cpp sources/*.cpp
+      run: g++ -std=c++17 -o main main.cpp
       
     - name: Clean up
       run: rm main

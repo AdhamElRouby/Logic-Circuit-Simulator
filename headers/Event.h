@@ -2,8 +2,8 @@
 #define EVENT
 
 #include <string>
-
 using namespace std;
+
 class Event {
     private:
         int time;
