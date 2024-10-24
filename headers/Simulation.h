@@ -18,10 +18,6 @@ class Simulation {
     void simulate(const string &filename); // helper function for run - runs the
                                            // event-driven simulation
     void refreshGateOutputs(int currTime); // helper function for simulate
-
-  public:
-    Simulation();
-
     // helping function to parse the .v file
     string trimLeadingSpaces(const string &line);
     bool isWhitespace(const string &line);
@@ -36,6 +32,9 @@ class Simulation {
     string extractInputName(const string &line);
     int extractNewValue(const string &line);
     void readStimFile(const string &filename);
+
+  public:
+    Simulation(); // constructor
 
     void run(const string &filename1,
              const string &filename2); // starts the simulation

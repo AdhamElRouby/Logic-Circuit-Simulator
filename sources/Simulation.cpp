@@ -79,7 +79,10 @@ vector<string> Simulation::extractInputs(const string &line) {
 
 // Function to remove the first two words
 string Simulation::removeFirstTwoWords(const string &line) {
-    istringstream iss(line); // Stream to read words
+    regex delayPattern(R"#(\#\(\s*\d+\s*\)\s*)#"); 
+    string modifiedLine = regex_replace(line, delayPattern, ""); // Remove delays
+
+    istringstream iss(modifiedLine); // Stream to read words
     vector<string> words;
     string word;
 
@@ -89,10 +92,10 @@ string Simulation::removeFirstTwoWords(const string &line) {
     }
 
     // Check if there are at least two words to remove
-    if (words.size() > 2) {
+    if (words.size() > 1) {
         // Reconstruct the line starting from the third word
         ostringstream oss;
-        for (size_t i = 2; i < words.size(); ++i) {
+        for (size_t i = 1; i < words.size(); ++i) {
             oss << words[i];
             if (i != words.size() - 1) {
                 oss << " "; // Add space between words
@@ -133,14 +136,12 @@ void Simulation::readVFile(const string &filename) {
             continue;
         }
 
-        // cout << line << endl;
-
         string firstWord = getFirstWord(line);
         firstWords.push_back(firstWord);
 
         // Extract delay using regex and store in delays vector
         regex delayPattern(
-            R"#(\#\((\d+)\))#"); // Regular expression to find delays
+            R"#(\#\(\s*(\d+)\s*\))#"); // Regular expression to find delays
         smatch match;            // To store matched groups
         if (regex_search(line, match, delayPattern)) {
             if (match.size() > 1) {
@@ -149,7 +150,7 @@ void Simulation::readVFile(const string &filename) {
         }
 
         // Store Output
-        regex outputPattern(R"#(\(([a-zA-Z0-9]+)\,)#"); // Match output right
+        regex outputPattern(R"#(\(\s*([a-zA-Z0-9]+)\s*\,)#"); // Match output right
                                                         // after '(' before ','
         smatch matchO;
         if (regex_search(line, matchO, outputPattern)) {
@@ -168,7 +169,7 @@ void Simulation::readVFile(const string &filename) {
 
     if (isEmptyFile) {
         cout << "File is empty or contains only whitespace, ignoring..."
-             << endl;
+            << endl;
     }
 
     int size = delays.size();
@@ -177,34 +178,6 @@ void Simulation::readVFile(const string &filename) {
             new Gate(firstWords[i], inputs[i], outputs[i], stoi(delays[i]));
         gates.push_back(gate);
     }
-
-    /*
-        // Print first words
-        cout << "First words in the file:" << endl;
-        for (const auto& word : firstWords) {
-            cout << word << endl;
-        }
-
-        // Print delays
-        cout << "Delays in the file:" << endl;
-        for (const auto& delay : delays) {
-            cout << delay << endl; // Print each delay
-        }
-
-        // Print outputs
-        cout << "Outputs in the file:" << endl;
-        for (const auto& output : outputs) {
-            cout << output << endl;
-        }
-
-        // Print inputs
-        cout << "Inputs in the file:" << endl;
-        for (int i = 0; i < inputs.size(); i++) {
-            for (int j = 0; j < inputs[i].size(); j++) {
-                cout << inputs[i][j] << "\t";
-            }
-            cout << endl;
-        }*/
 
     file.close();
 }
@@ -298,23 +271,6 @@ void Simulation::readStimFile(const string &filename) {
         Event *event = new Event(timestamps[i], names[i], newvalues[i]);
         eventQueue.push(event);
     }
-    /*
-
-            cout << "time stamps in the file:" << endl;
-            for (const auto& timestamp1 : timestamps) {
-                cout << timestamp1 << endl;
-            }
-            cout << "intput names in the file:" << endl;
-            for (const auto& na : names) {
-                cout << na << endl;
-            }
-            cout << "new value in the file:" << endl;
-            for (const auto& nv : newvalues) {
-                cout << nv << endl;
-            }
-
-
-    */
 
     file.close();
 }
@@ -342,6 +298,7 @@ void Simulation::simulate(const string &filename) {
         string signalName = event->getName();
         if (mp[signalName] != event->getNewValue()) { // if there is a change in
                                                       // the value of the signal
+            cout << "Processing New Event\n";
             mp[signalName] = event->getNewValue(); // update the value
             fileOut << currTime << ", " << signalName << ", "
                     << event->getNewValue()

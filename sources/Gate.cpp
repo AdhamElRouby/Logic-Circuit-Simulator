@@ -37,7 +37,10 @@ int Gate::evaluate() {
         if (inputs.size() == 1) {
             return !mp[inputs[0]]; // NOT operation
         }
-        cout << "A not gate has more than one input";
+        if(inputs.empty()) cout << "A not gate with no inputs\n";
+        else cout << "A not gate has more than one input\n";
+        cout << "ouptut = " << output << '\n';
+        
         return -999; // invalid if not a single input
     } else if (operationType == "xor") {
         // xor: result is true if an odd number of inputs are true
@@ -72,12 +75,12 @@ int Gate::evaluate() {
             result = result || mp[inputs[i]]; // OR operation
         }
         return !result; // NOR is the inverse of OR
-    } else if (operationType == "buffer") {
+    } else if (operationType == "buf") {
         // buffer: simply returns the value of the single input
         if (inputs.size() == 1) {
             return mp[inputs[0]]; // BUFFER just passes the input unchanged
         }
-        cout << "A buffer gate has more than one input";
+        cout << "A buffer gate has more than one input\n";
         return -999; // invalid if not a single input
     }
 
