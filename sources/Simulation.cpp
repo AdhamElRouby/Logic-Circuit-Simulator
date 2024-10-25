@@ -150,7 +150,7 @@ void Simulation::readVFile(const string &filename) {
         }
 
         // Store Output
-        regex outputPattern(R"#(\(\s*([a-zA-Z0-9]+)\s*\,)#"); // Match output right
+        regex outputPattern(R"#(\(\s*([a-zA-Z0-9\[\]]+)\s*\,)#"); // Match output right
                                                         // after '(' before ','
         smatch matchO;
         if (regex_search(line, matchO, outputPattern)) {
