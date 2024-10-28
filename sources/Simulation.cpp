@@ -1,6 +1,7 @@
 #include "../headers/Simulation.h"
 #include <cctype>
 #include <fstream>
+#include <iostream>
 #include <regex>
 #include <sstream>
 
@@ -115,6 +116,8 @@ void Simulation::readVFile(const string &filename) {
         cerr << "Error opening file: " << filename << endl;
         return;
     }
+
+    cout << "Reading Verilog File...\n";
 
     string line;
     bool isEmptyFile = true;
@@ -249,6 +252,9 @@ void Simulation::readStimFile(const string &filename) {
         cerr << "Error opening file: " << filename << endl;
         return;
     }
+
+    cout << "Reading Stimulus File...\n";
+
     string line;
     vector<int> timestamps;
     vector<string> names;
@@ -291,6 +297,7 @@ void Simulation::refreshGateOutputs(int currTime) {
 
 void Simulation::simulate(const string &filename) {
     ofstream fileOut(filename);
+    cout << "Simulation Started\n";
     while (!eventQueue.empty()) {
         Event *event = eventQueue.top();
         eventQueue.pop();

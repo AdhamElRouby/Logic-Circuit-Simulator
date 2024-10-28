@@ -6,13 +6,11 @@ module test_circuit_2 (A, B, C, D, Y);
     input D;
     output Y;
 
-    wire w1;
-    wire w2;
-    wire w3;
+    wire [2:0] w;
 
-    xor #(150) g0(w1,A,B);
-    xor #(150) g1(w2,C,D);
-    and #(250) g2(w3,w1,w2);
-    or  #(300) g3(Y,w3,B);
+    xor #(150) g0(w[0],A,B);
+    xor #(150) g1(w[1],C,D);
+    and #(250) g2(w[2],w[0],w[1]);
+    or  #(300) g3(Y,w[2],B);
 
 endmodule
