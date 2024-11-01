@@ -2,7 +2,12 @@
 
 This C++ event-driven logic circuit simulator processes a circuit defined in a Verilog file and external events specified in a .stim file, generating a .sim file that captures the changes in the circuit's signals. Additionally, a Python script is utilized to visualize the waveforms and signal changes.
 
-<!-- GIF -->
+
+<div align="center">
+
+<img src="./assets/demo.gif" alt="App Demo">
+
+</div>
 
 ## Tech Stack
 
@@ -24,7 +29,7 @@ This C++ event-driven logic circuit simulator processes a circuit defined in a V
 - **Gate Evaluation:** The purpose of this is to compute the output of each gate based on its logical function and current input values. The steps we used in this are as follows, first, we checked the map of the signal values to get the current state of the gate inputs, and then based on the type of the gate the function performs the corresponding logical operation. And finally, it returns the output we got which allows the simulation to refresh the circuit with any new state updates.
 - **Simulation:** It simulates by processing the events in chronological order. First, it pops the earliest event from the priority queue and updates the signal values in the map. It keeps on doing this for all the events in the priority queue. If, at any time, the signal value differs from its previous state, the refreshGateOutpus function gets called to modify the gate's output accordingly. It keeps on doing this until the priority queue is empty. 
 
-For more details, please refer to the report.pdf file.
+For more details, please refer to the [report.pdf](report.pdf) file.
 
 ## Run Locally
 
