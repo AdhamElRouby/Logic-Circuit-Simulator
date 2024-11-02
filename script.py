@@ -63,6 +63,6 @@ def plot_waveforms(signals):
     plt.show()
 
 # Main function to read the file and plot
-filename = 'D:\\python bonus\\output.sim'  # Specify your file path here
+filename = 'output.sim'  # Specify your file path here
 signals = read_sim_file(filename)
 plot_waveforms(signals)
